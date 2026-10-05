@@ -1,0 +1,2400 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Quadrum — приватный многосезонный Minecraft сервер ванильного выживания. IP: Quadrum.gomc.fun, версия 1.21.11">
+    <title>Quadrum | Официальный сайт Minecraft сервера</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('https://cdn.jsdelivr.net/gh/South-Paw/typeface-minecraft@master/files/minecraft-regular.woff2') format('woff2'),
+                 url('https://cdn.jsdelivr.net/gh/South-Paw/typeface-minecraft@master/files/minecraft-regular.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('https://cdn.jsdelivr.net/gh/South-Paw/typeface-minecraft@master/files/minecraft-bold.woff2') format('woff2'),
+                 url('https://cdn.jsdelivr.net/gh/South-Paw/typeface-minecraft@master/files/minecraft-bold.woff') format('woff');
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --bg-dark: #0d0906;
+            --bg-main: #14100c;
+            --bg-card: #1c1610;
+            --bg-elevated: #251c14;
+            --gold-primary: #f5b342;
+            --gold-bright: #ffd966;
+            --gold-deep: #b87a1a;
+            --gold-dark: #8a5a12;
+            --crimson: #6b1f1f;
+            --crimson-dark: #4a1414;
+            --crimson-bright: #a83232;
+            --text-primary: #f5ead5;
+            --text-secondary: #c9b89a;
+            --text-muted: #8a7a60;
+            --border-gold: rgba(245, 179, 66, 0.35);
+            --border-gold-strong: rgba(245, 179, 66, 0.65);
+            --glow-gold: 0 0 20px rgba(245, 179, 66, 0.4);
+            --glow-gold-strong: 0 0 40px rgba(245, 179, 66, 0.7);
+            --shadow-deep: 0 25px 60px rgba(0, 0, 0, 0.9);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 10px;
+            --transition: cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Minecraft', 'Inter', monospace;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            image-rendering: pixelated;
+        }
+
+        button, .btn, .tab-btn, .discord-btn, a.btn {
+            font-family: 'Minecraft', monospace;
+            letter-spacing: 0.5px;
+        }
+
+        h1, h2, h3, .topbar-name, .footer-brand, .section-title, .staff-title {
+            font-family: 'Press Start 2P', 'Minecraft', monospace;
+            letter-spacing: 1px;
+        }
+
+        .hero-ip-address, .version-tag, .online-counter, code {
+            font-family: 'VT323', 'JetBrains Mono', monospace;
+        }
+
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            background:
+                radial-gradient(ellipse at 20% 0%, rgba(107, 31, 31, 0.4) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 100%, rgba(184, 122, 26, 0.25) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 50%, rgba(20, 16, 12, 1) 0%, var(--bg-dark) 100%);
+        }
+
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image:
+                linear-gradient(rgba(245, 179, 66, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(245, 179, 66, 0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at 50% 40%, black 30%, transparent 75%);
+            -webkit-mask-image: radial-gradient(ellipse at 50% 40%, black 30%, transparent 75%);
+            animation: gridShift 40s linear infinite;
+        }
+
+        @keyframes gridShift {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 60px 60px, 60px 60px; }
+        }
+
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            bottom: -20px;
+            width: 6px;
+            height: 6px;
+            border-radius: 0;
+            background: var(--gold-primary);
+            box-shadow: 0 0 12px var(--gold-primary), 0 0 24px var(--gold-deep);
+            opacity: 0;
+            animation: floatUp linear infinite;
+            image-rendering: pixelated;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0) scale(0.6);
+                opacity: 0;
+            }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.6; }
+            100% {
+                transform: translateY(-105vh) translateX(var(--drift, 40px)) scale(1.1);
+                opacity: 0;
+            }
+        }
+
+        .top-glow {
+            position: fixed;
+            top: -30%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120%;
+            height: 60%;
+            background: radial-gradient(ellipse, rgba(245, 179, 66, 0.12) 0%, transparent 60%);
+            z-index: -1;
+            pointer-events: none;
+            animation: pulseGlow 8s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .site-container {
+            max-width: 1320px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 30px 24px 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ВЕРХНЯЯ ПАНЕЛЬ */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 28px;
+            background: rgba(20, 16, 12, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid var(--border-gold);
+            border-radius: 0;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.05), inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.9s var(--transition) both;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .topbar-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 0;
+            background: linear-gradient(135deg, var(--crimson), var(--gold-deep));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: var(--gold-bright);
+            box-shadow: 0 0 20px rgba(245, 179, 66, 0.3), inset 0 2px 0 rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0,0,0,0.4);
+            border: 2px solid var(--gold-primary);
+            animation: logoPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(245, 179, 66, 0.3), inset 0 2px 0 rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0,0,0,0.4); }
+            50% { box-shadow: 0 0 30px rgba(245, 179, 66, 0.6), inset 0 2px 0 rgba(255,255,255,0.3), inset 0 -2px 0 rgba(0,0,0,0.4); }
+        }
+
+        .topbar-name {
+            font-size: 1rem;
+            color: var(--gold-bright);
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .status-dot {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            background: rgba(76, 175, 80, 0.12);
+            border: 2px solid rgba(76, 175, 80, 0.4);
+            border-radius: 0;
+            font-family: 'Minecraft', monospace;
+        }
+
+        .status-dot::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            box-shadow: 0 0 10px #4caf50;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .online-counter {
+            font-weight: 600;
+            color: var(--gold-bright);
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        /* ГЕРОЙ */
+        .hero {
+            position: relative;
+            border-radius: 0;
+            overflow: hidden;
+            margin-bottom: 40px;
+            border: 3px solid var(--border-gold-strong);
+            background: linear-gradient(135deg, rgba(107, 31, 31, 0.3), rgba(20, 16, 12, 0.95));
+            box-shadow: var(--shadow-deep), 0 0 60px rgba(184, 122, 26, 0.15) inset, inset 0 3px 0 rgba(255,255,255,0.05), inset 0 -3px 0 rgba(0,0,0,0.5);
+            animation: heroReveal 1.2s var(--transition) 0.2s both;
+            image-rendering: pixelated;
+        }
+
+        @keyframes heroReveal {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-inner {
+            padding: 70px 60px;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            flex: 1 1 480px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(245, 179, 66, 0.12);
+            border: 2px solid var(--border-gold-strong);
+            border-radius: 0;
+            font-size: 0.65rem;
+            color: var(--gold-bright);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            font-family: 'Press Start 2P', monospace;
+            animation: fadeInUp 0.8s var(--transition) 0.4s both;
+            text-shadow: 2px 2px 0 #000;
+            line-height: 1.8;
+        }
+
+        .hero-badge i {
+            color: var(--gold-primary);
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(15deg); }
+        }
+
+        .hero-title {
+            font-size: clamp(1.4rem, 3.5vw, 2.6rem);
+            line-height: 1.4;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-primary) 40%, var(--crimson-bright) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradientShift 6s ease infinite, fadeInUp 0.8s var(--transition) 0.5s both;
+            filter: drop-shadow(0 0 30px rgba(245, 179, 66, 0.3)) drop-shadow(2px 2px 0 #000);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 560px;
+            animation: fadeInUp 0.8s var(--transition) 0.6s both;
+            line-height: 1.9;
+        }
+
+        .hero-subtitle strong {
+            color: var(--gold-bright);
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s var(--transition) 0.7s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 32px;
+            border-radius: 0;
+            font-weight: bold;
+            font-size: 0.85rem;
+            text-decoration: none;
+            cursor: pointer;
+            border: 3px solid;
+            transition: all 0.2s var(--transition);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.6);
+            letter-spacing: 1px;
+            image-rendering: pixelated;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.25) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-primary {
+            background: linear-gradient(180deg, var(--gold-primary) 0%, var(--gold-deep) 100%);
+            color: #1a120e;
+            border-color: var(--gold-bright);
+            box-shadow: 0 6px 0 var(--gold-dark), 0 8px 24px rgba(245, 179, 66, 0.4), inset 0 2px 0 rgba(255,255,255,0.4), inset 0 -2px 0 rgba(0,0,0,0.2);
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 var(--gold-dark), 0 12px 36px rgba(245, 179, 66, 0.6), inset 0 2px 0 rgba(255,255,255,0.4), inset 0 -2px 0 rgba(0,0,0,0.2);
+        }
+
+        .btn-primary:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 var(--gold-dark), 0 4px 16px rgba(245, 179, 66, 0.4), inset 0 2px 0 rgba(255,255,255,0.3), inset 0 -2px 0 rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(180deg, rgba(107, 31, 31, 0.8), rgba(74, 20, 20, 0.9));
+            color: var(--gold-bright);
+            border-color: var(--gold-primary);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 6px 0 rgba(0,0,0,0.5), inset 0 2px 0 rgba(255,255,255,0.1), inset 0 -2px 0 rgba(0,0,0,0.4);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(180deg, rgba(140, 45, 45, 0.9), rgba(107, 31, 31, 1));
+            box-shadow: 0 8px 0 rgba(0,0,0,0.5), 0 12px 36px rgba(107, 31, 31, 0.6), inset 0 2px 0 rgba(255,255,255,0.15), inset 0 -2px 0 rgba(0,0,0,0.4);
+        }
+
+        .btn-secondary:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.5), inset 0 2px 0 rgba(255,255,255,0.1), inset 0 -2px 0 rgba(0,0,0,0.4);
+        }
+
+        .btn i {
+            font-size: 1rem;
+        }
+
+        /* IP-ПАНЕЛЬ */
+        .hero-ip {
+            flex: 0 1 360px;
+            background: rgba(20, 16, 12, 0.9);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 3px solid var(--border-gold-strong);
+            border-radius: 0;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 3px 0 rgba(255,255,255,0.05), inset 0 -3px 0 rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s var(--transition) 0.8s both;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-ip::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+            animation: scanLine 3s linear infinite;
+        }
+
+        @keyframes scanLine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .hero-ip-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Press Start 2P', monospace;
+            text-shadow: 1px 1px 0 #000;
+            letter-spacing: 1px;
+            line-height: 1.8;
+        }
+
+        .hero-ip-label i {
+            color: var(--gold-primary);
+        }
+
+        .hero-ip-address {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gold-bright);
+            padding: 18px 20px;
+            background: rgba(245, 179, 66, 0.08);
+            border: 3px dashed var(--border-gold-strong);
+            border-radius: 0;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s var(--transition);
+            position: relative;
+            text-shadow: 2px 2px 0 #000;
+            letter-spacing: 1px;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .hero-ip-address:hover {
+            background: rgba(245, 179, 66, 0.15);
+            border-style: solid;
+            box-shadow: var(--glow-gold);
+            transform: scale(1.02);
+        }
+
+        .hero-ip-address:active {
+            transform: scale(0.98);
+        }
+
+        .hero-ip-address.copied {
+            border-color: #4caf50;
+            background: rgba(76, 175, 80, 0.15);
+            animation: copiedPulse 0.5s ease;
+        }
+
+        @keyframes copiedPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .copy-icon {
+            color: var(--gold-primary);
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+
+        .hero-ip-address:hover .copy-icon {
+            transform: scale(1.2);
+            color: var(--gold-bright);
+        }
+
+        .hero-ip-version {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-family: 'Minecraft', monospace;
+        }
+
+        .version-tag {
+            padding: 6px 14px;
+            background: rgba(107, 31, 31, 0.6);
+            border: 2px solid var(--crimson-bright);
+            border-radius: 0;
+            color: var(--gold-bright);
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        /* ВКЛАДКИ */
+        .tabs-wrapper {
+            background: rgba(20, 16, 12, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 3px solid var(--border-gold);
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: var(--shadow-deep), inset 0 3px 0 rgba(255,255,255,0.04), inset 0 -3px 0 rgba(0,0,0,0.4);
+            animation: fadeInUp 1s var(--transition) 0.9s both;
+        }
+
+        .tabs-nav {
+            display: flex;
+            gap: 0;
+            padding: 0;
+            background: rgba(13, 9, 6, 0.7);
+            border-bottom: 3px solid var(--border-gold);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .tabs-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: 170px;
+            background: transparent;
+            border: none;
+            padding: 22px 20px;
+            font-size: 0.7rem;
+            font-weight: normal;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.25s var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-right: 2px solid rgba(245, 179, 66, 0.1);
+            text-shadow: 1px 1px 0 #000;
+            line-height: 1.8;
+        }
+
+        .tab-btn:last-child {
+            border-right: none;
+        }
+
+        .tab-btn i {
+            font-size: 1rem;
+            transition: transform 0.25s var(--transition);
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 80%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+            transition: transform 0.3s var(--transition);
+            box-shadow: var(--glow-gold);
+        }
+
+        .tab-btn:hover {
+            background: rgba(245, 179, 66, 0.05);
+            color: var(--gold-bright);
+        }
+
+        .tab-btn:hover i {
+            transform: scale(1.15) translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: rgba(245, 179, 66, 0.1);
+            color: var(--gold-bright);
+        }
+
+        .tab-btn.active i {
+            color: var(--gold-primary);
+            transform: scale(1.1);
+        }
+
+        .tab-btn.active::after {
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        .tab-content {
+            padding: 48px 44px;
+            min-height: 480px;
+            position: relative;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: paneFade 0.5s var(--transition);
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @keyframes paneFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ЗАГОЛОВКИ */
+        .section-title {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: var(--gold-bright);
+            margin-bottom: 28px;
+            padding-left: 24px;
+            position: relative;
+            text-shadow: 2px 2px 0 #000, 0 0 20px rgba(245,179,66,0.3);
+            line-height: 1.7;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 85%;
+            background: linear-gradient(180deg, var(--gold-primary), var(--crimson));
+            box-shadow: var(--glow-gold);
+        }
+
+        .section-title i {
+            color: var(--gold-primary);
+            margin-right: 12px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.9;
+        }
+
+        .subtitle strong {
+            color: var(--gold-bright);
+        }
+
+        /* ИНФО-КАРТОЧКИ */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+            margin: 32px 0;
+        }
+
+        .info-box {
+            background: linear-gradient(145deg, rgba(37, 28, 20, 0.95), rgba(28, 22, 16, 0.95));
+            padding: 30px;
+            border-radius: 0;
+            border: 3px solid var(--border-gold);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s var(--transition);
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.04), inset 0 -2px 0 rgba(0,0,0,0.4);
+        }
+
+        .info-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s var(--transition);
+        }
+
+        .info-box:hover {
+            transform: translateY(-6px);
+            border-color: var(--border-gold-strong);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), var(--glow-gold), inset 0 2px 0 rgba(255,255,255,0.06), inset 0 -2px 0 rgba(0,0,0,0.4);
+        }
+
+        .info-box:hover::before {
+            transform: translateX(100%);
+        }
+
+        .info-box-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(245, 179, 66, 0.2), rgba(107, 31, 31, 0.4));
+            border: 2px solid var(--border-gold-strong);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--gold-primary);
+            margin-bottom: 18px;
+            transition: all 0.3s var(--transition);
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.1), inset 0 -2px 0 rgba(0,0,0,0.3);
+        }
+
+        .info-box:hover .info-box-icon {
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: var(--glow-gold), inset 0 2px 0 rgba(255,255,255,0.15), inset 0 -2px 0 rgba(0,0,0,0.3);
+        }
+
+        .info-box h4 {
+            font-size: 0.85rem;
+            color: var(--gold-bright);
+            margin-bottom: 12px;
+            text-shadow: 1px 1px 0 #000;
+            line-height: 1.7;
+        }
+
+        .info-box p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .info-box code {
+            background: rgba(245, 179, 66, 0.1);
+            padding: 3px 10px;
+            color: var(--gold-bright);
+            font-size: 1.1rem;
+            border: 1px solid var(--border-gold);
+            text-shadow: 1px 1px 0 #000;
+            letter-spacing: 1px;
+        }
+
+        /* ФИЧИ */
+        .feature-list {
+            list-style: none;
+            margin: 24px 0;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            background: rgba(37, 28, 20, 0.6);
+            border-left: 4px solid transparent;
+            transition: all 0.3s var(--transition);
+            border-top: 1px solid rgba(245,179,66,0.08);
+            border-right: 1px solid rgba(245,179,66,0.08);
+            border-bottom: 1px solid rgba(245,179,66,0.08);
+        }
+
+        .feature-list li:hover {
+            background: rgba(37, 28, 20, 0.95);
+            border-left-color: var(--gold-primary);
+            transform: translateX(8px);
+            box-shadow: -8px 0 20px rgba(245, 179, 66, 0.15);
+        }
+
+        .feature-list li i {
+            color: var(--gold-primary);
+            font-size: 1.3rem;
+            margin-top: 3px;
+            flex-shrink: 0;
+            transition: transform 0.3s;
+        }
+
+        .feature-list li:hover i {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .feature-list li strong {
+            color: var(--gold-bright);
+        }
+
+        .feature-list li span {
+            color: var(--text-secondary);
+        }
+
+        /* ПРАВИЛА */
+        .rules-intro {
+            background: linear-gradient(135deg, rgba(107, 31, 31, 0.4), rgba(74, 20, 20, 0.6));
+            border-left: 5px solid var(--crimson-bright);
+            padding: 24px 28px;
+            margin-bottom: 36px;
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            border-top: 1px solid rgba(168,50,50,0.3);
+            border-right: 1px solid rgba(168,50,50,0.3);
+            border-bottom: 1px solid rgba(168,50,50,0.3);
+            animation: warningPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes warningPulse {
+            0%, 100% { box-shadow: 0 0 0 rgba(168, 50, 50, 0); }
+            50% { box-shadow: 0 0 25px rgba(168, 50, 50, 0.3); }
+        }
+
+        .rules-intro i {
+            color: var(--crimson-bright);
+            font-size: 2rem;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .rules-intro p {
+            color: #f0c0c0;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .rules-intro p strong {
+            color: var(--gold-bright);
+        }
+
+        .rules-section {
+            margin-bottom: 44px;
+        }
+
+        .rules-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .rules-section-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.8rem;
+            color: var(--gold-bright);
+            margin-bottom: 22px;
+            padding: 16px 22px;
+            background: linear-gradient(90deg, rgba(107, 31, 31, 0.6), rgba(37, 28, 20, 0.4));
+            border-left: 6px solid var(--gold-primary);
+            text-shadow: 2px 2px 0 #000;
+            line-height: 1.8;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .rules-section-title i {
+            color: var(--gold-primary);
+            font-size: 1.2rem;
+        }
+
+        .rules-list {
+            counter-reset: rule-counter;
+            list-style: none;
+            margin-top: 8px;
+        }
+
+        .rules-list li {
+            counter-increment: rule-counter;
+            margin-bottom: 14px;
+            padding: 20px 24px 20px 100px;
+            position: relative;
+            background: rgba(37, 28, 20, 0.6);
+            border: 2px solid rgba(245, 179, 66, 0.15);
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            transition: all 0.3s var(--transition);
+            line-height: 1.85;
+        }
+
+        .rules-list li::before {
+            content: counter(rule-counter);
+            position: absolute;
+            left: 22px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.75rem;
+            color: var(--gold-bright);
+            background: rgba(107, 31, 31, 0.6);
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--border-gold-strong);
+            box-shadow: 0 0 15px rgba(245, 179, 66, 0.2), inset 0 2px 0 rgba(255,255,255,0.1), inset 0 -2px 0 rgba(0,0,0,0.3);
+            transition: all 0.3s var(--transition);
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        .rules-list li:hover {
+            background: rgba(37, 28, 20, 0.95);
+            border-color: var(--border-gold-strong);
+            transform: translateX(8px);
+            box-shadow: -8px 0 24px rgba(245, 179, 66, 0.2);
+        }
+
+        .rules-list li:hover::before {
+            background: var(--crimson);
+            box-shadow: var(--glow-gold), inset 0 2px 0 rgba(255,255,255,0.15), inset 0 -2px 0 rgba(0,0,0,0.3);
+        }
+
+        .rules-list li strong {
+            color: var(--gold-bright);
+            display: inline;
+        }
+
+        .rules-list li .rule-note {
+            display: block;
+            margin-top: 8px;
+            padding: 10px 14px;
+            background: rgba(107, 31, 31, 0.25);
+            border-left: 3px solid var(--crimson-bright);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.7;
+        }
+
+        .rules-list li .rule-note strong {
+            color: #f0c0c0;
+        }
+
+        /* КОНТАКТЫ */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 28px;
+            margin-top: 32px;
+        }
+
+        .discord-panel {
+            background: linear-gradient(145deg, rgba(88, 101, 242, 0.15), rgba(37, 28, 20, 0.95));
+            border: 3px solid rgba(114, 137, 218, 0.5);
+            padding: 40px 32px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s var(--transition);
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.05), inset 0 -2px 0 rgba(0,0,0,0.4);
+        }
+
+        .discord-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(114, 137, 218, 0.15) 0%, transparent 60%);
+            animation: rotateGlow 15s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotateGlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .discord-panel:hover {
+            border-color: rgba(114, 137, 218, 0.9);
+            box-shadow: 0 20px 50px rgba(88, 101, 242, 0.3), inset 0 2px 0 rgba(255,255,255,0.05), inset 0 -2px 0 rgba(0,0,0,0.4);
+            transform: translateY(-4px);
+        }
+
+        .discord-icon {
+            font-size: 4.5rem;
+            color: #7289da;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 0 20px rgba(114, 137, 218, 0.6));
+            animation: discordFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes discordFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .discord-panel h3 {
+            font-size: 0.95rem;
+            color: #b3d0ff;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 0 #000;
+            line-height: 1.7;
+        }
+
+        .discord-panel p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 2;
+            font-size: 0.9rem;
+        }
+
+        .discord-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(180deg, #6b76ff, #4752c4);
+            color: white;
+            padding: 16px 32px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.8rem;
+            transition: all 0.2s var(--transition);
+            position: relative;
+            z-index: 2;
+            border: 3px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 6px 0 #2a3080, 0 8px 24px rgba(88, 101, 242, 0.4), inset 0 2px 0 rgba(255,255,255,0.2);
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            letter-spacing: 1px;
+        }
+
+        .discord-btn:hover {
+            background: linear-gradient(180deg, #7f88ff, #5865f2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #2a3080, 0 12px 36px rgba(88, 101, 242, 0.7), inset 0 2px 0 rgba(255,255,255,0.2);
+        }
+
+        .discord-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #2a3080, inset 0 2px 0 rgba(255,255,255,0.15);
+        }
+
+        .staff-panel {
+            background: rgba(37, 28, 20, 0.75);
+            border: 3px solid var(--border-gold);
+            padding: 32px;
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.04), inset 0 -2px 0 rgba(0,0,0,0.4);
+        }
+
+        .staff-title {
+            font-size: 0.9rem;
+            color: var(--gold-bright);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 2px 2px 0 #000;
+            line-height: 1.7;
+        }
+
+        .staff-title i {
+            color: var(--gold-primary);
+        }
+
+        .admin-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 22px;
+            background: linear-gradient(145deg, rgba(37, 28, 20, 0.95), rgba(28, 22, 16, 0.95));
+            border: 2px solid var(--border-gold);
+            margin-bottom: 16px;
+            transition: all 0.3s var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.04), inset 0 -2px 0 rgba(0,0,0,0.4);
+        }
+
+        .admin-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--gold-primary), var(--crimson));
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.3s var(--transition);
+        }
+
+        .admin-card:hover {
+            transform: translateX(8px);
+            border-color: var(--border-gold-strong);
+            box-shadow: -8px 0 30px rgba(245, 179, 66, 0.2), inset 0 2px 0 rgba(255,255,255,0.06), inset 0 -2px 0 rgba(0,0,0,0.4);
+        }
+
+        .admin-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .admin-avatar-wrap {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .admin-avatar {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--crimson), var(--gold-deep));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: var(--gold-bright);
+            border: 3px solid var(--gold-primary);
+            box-shadow: 0 0 20px rgba(245, 179, 66, 0.3), inset 0 2px 0 rgba(255,255,255,0.15), inset 0 -2px 0 rgba(0,0,0,0.3);
+            transition: all 0.3s var(--transition);
+        }
+
+        .admin-card:hover .admin-avatar {
+            transform: scale(1.08) rotate(-5deg);
+            box-shadow: var(--glow-gold-strong), inset 0 2px 0 rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0,0,0,0.3);
+        }
+
+        .admin-status-indicator {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 14px;
+            height: 14px;
+            background: #4caf50;
+            border: 2px solid var(--bg-card);
+            box-shadow: 0 0 10px #4caf50;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        .admin-info h4 {
+            font-size: 0.85rem;
+            color: var(--gold-bright);
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 0 #000;
+            line-height: 1.7;
+        }
+
+        .admin-role {
+            display: inline-block;
+            font-size: 0.6rem;
+            padding: 6px 14px;
+            background: rgba(107, 31, 31, 0.7);
+            color: var(--gold-bright);
+            border: 2px solid var(--crimson-bright);
+            font-family: 'Press Start 2P', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 0 #000;
+            line-height: 1.6;
+        }
+
+        .admin-role.head-admin {
+            background: linear-gradient(135deg, rgba(245, 179, 66, 0.3), rgba(107, 31, 31, 0.8));
+            border-color: var(--gold-primary);
+        }
+
+        /* ГАЛЕРЕЯ */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
+            margin-top: 28px;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 16 / 10;
+            overflow: hidden;
+            border: 3px solid var(--border-gold);
+            cursor: pointer;
+            transition: all 0.35s var(--transition);
+            background: var(--bg-elevated);
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.04), inset 0 -2px 0 rgba(0,0,0,0.4);
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 40%, rgba(13, 9, 6, 0.95) 100%);
+            opacity: 0.6;
+            transition: opacity 0.35s;
+            z-index: 1;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s var(--transition);
+            filter: saturate(0.9) brightness(0.9);
+            image-rendering: pixelated;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), var(--glow-gold), inset 0 2px 0 rgba(255,255,255,0.06), inset 0 -2px 0 rgba(0,0,0,0.4);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.12);
+            filter: saturate(1.15) brightness(1);
+        }
+
+        .gallery-item:hover::after {
+            opacity: 0.3;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 22px;
+            z-index: 2;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.4s var(--transition);
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .gallery-caption-title {
+            font-family: 'Minecraft', monospace;
+            font-size: 1rem;
+            color: var(--gold-bright);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .gallery-caption-title i {
+            color: var(--gold-primary);
+        }
+
+        .gallery-caption-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        /* ФУТЕР */
+        .footer {
+            margin-top: 50px;
+            padding: 32px;
+            text-align: center;
+            border-top: 2px solid var(--border-gold);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .footer-brand {
+            font-size: 1rem;
+            color: var(--gold-primary);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0 #000, 0 0 15px rgba(245,179,66,0.3);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border: 2px solid transparent;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold-bright);
+            border-color: var(--border-gold);
+            transform: translateY(-2px);
+            background: rgba(245,179,66,0.05);
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        /* АДАПТИВ */
+        @media (max-width: 900px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-inner {
+                padding: 50px 32px;
+                gap: 40px;
+            }
+
+            .tab-content {
+                padding: 32px 24px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .site-container {
+                padding: 16px 12px 40px;
+            }
+
+            .topbar {
+                padding: 12px 18px;
+            }
+
+            .topbar-name {
+                font-size: 0.8rem;
+            }
+
+            .online-counter {
+                font-size: 1rem;
+            }
+
+            .hero-inner {
+                padding: 40px 24px;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .tab-btn span {
+                display: none;
+            }
+
+            .tab-btn i {
+                font-size: 1.3rem;
+                margin: 0;
+            }
+
+            .tab-btn {
+                padding: 20px 12px;
+                min-width: 0;
+            }
+
+            .rules-list li {
+                padding: 18px 16px 18px 84px;
+                font-size: 0.85rem;
+            }
+
+            .rules-list li::before {
+                left: 14px;
+                width: 48px;
+                height: 48px;
+                font-size: 0.65rem;
+            }
+
+            .rules-section-title {
+                font-size: 0.65rem;
+                padding: 14px 16px;
+            }
+
+            .section-title {
+                padding-left: 18px;
+                font-size: 0.9rem;
+            }
+
+            .admin-card {
+                padding: 18px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 14px;
+            height: 14px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+            border-left: 2px solid var(--border-gold);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--gold-deep), var(--crimson));
+            border: 2px solid var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--gold-primary), var(--crimson-bright));
+        }
+
+        ::selection {
+            background: var(--gold-primary);
+            color: var(--bg-dark);
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(150px);
+            background: linear-gradient(180deg, var(--gold-primary), var(--gold-deep));
+            color: var(--bg-dark);
+            padding: 18px 32px;
+            font-weight: bold;
+            box-shadow: 0 15px 40px rgba(245, 179, 66, 0.6), 0 6px 0 var(--gold-dark), inset 0 2px 0 rgba(255,255,255,0.3);
+            z-index: 9999;
+            transition: transform 0.4s var(--transition), opacity 0.4s;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            pointer-events: none;
+            border: 3px solid var(--gold-bright);
+            font-family: 'Minecraft', monospace;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.2);
+            max-width: 90vw;
+            text-align: center;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast i {
+            font-size: 1.2rem;
+            color: #1a120e;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ФОНОВЫЕ СЛОИ -->
+<div class="bg-layer"></div>
+<div class="bg-grid"></div>
+<div class="top-glow"></div>
+<div class="particles" id="particles"></div>
+
+<div class="site-container">
+
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="topbar-logo">
+                <i class="fas fa-heart"></i>
+            </div>
+            <div class="topbar-name">Quadrum</div>
+        </div>
+        <div class="topbar-right">
+            <div class="status-dot" id="statusDot">
+                <span id="statusText">Проверка...</span>
+            </div>
+            <div class="online-counter" id="onlineCounter">
+                <i class="fas fa-users"></i> <span id="onlineCount">—</span> игроков
+            </div>
+        </div>
+    </div>
+
+    <!-- ГЕРОЙ -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-star"></i>
+                    Приватный многосезонный проект
+                </div>
+                <h1 class="hero-title">Твой уютный<br>уголок в Minecraft</h1>
+                <p class="hero-subtitle">
+                    Это не просто сервер. Это наш маленький мир, созданный для того, чтобы уйти от суеты 
+                    и насладиться настоящим <strong>ванильным выживанием</strong>. Место, куда хочется возвращаться снова и снова.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary" id="playBtn" type="button">
+                        <i class="fas fa-gamepad"></i>
+                        Начать играть
+                    </button>
+                    <button class="btn btn-secondary" id="discordHeroBtn" type="button">
+                        <i class="fab fa-discord"></i>
+                        Discord сервер
+                    </button>
+                </div>
+            </div>
+
+            <div class="hero-ip">
+                <div class="hero-ip-label">
+                    <i class="fas fa-server"></i> IP-адрес сервера
+                </div>
+                <div class="hero-ip-address" id="ipAddress" role="button" tabindex="0" title="Нажми, чтобы скопировать">
+                    <span id="ipText">Quadrum.gomc.fun</span>
+                    <i class="fas fa-copy copy-icon"></i>
+                </div>
+                <div class="hero-ip-version">
+                    <i class="fas fa-code-branch" style="color: var(--gold-primary);"></i>
+                    Версия:
+                    <span class="version-tag" id="versionTag">1.21.11</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ВКЛАДКИ -->
+    <div class="tabs-wrapper">
+        <nav class="tabs-nav" id="tabsNav">
+            <button class="tab-btn active" data-tab="info" type="button">
+                <i class="fas fa-info-circle"></i> <span>О сервере</span>
+            </button>
+            <button class="tab-btn" data-tab="rules" type="button">
+                <i class="fas fa-gavel"></i> <span>Правила</span>
+            </button>
+            <button class="tab-btn" data-tab="contacts" type="button">
+                <i class="fas fa-users"></i> <span>Контакты</span>
+            </button>
+            <button class="tab-btn" data-tab="gallery" type="button">
+                <i class="fas fa-images"></i> <span>Скриншоты</span>
+            </button>
+        </nav>
+
+        <div class="tab-content">
+
+            <!-- О СЕРВЕРЕ -->
+            <div id="info" class="tab-pane active">
+                <h2 class="section-title"><i class="fas fa-heart"></i>О сервере Quadrum</h2>
+                <p class="subtitle">
+                    Это не просто сервер. Это наш маленький мир, созданный для того, чтобы уйти от суеты и насладиться 
+                    настоящим <strong>ванильным выживанием</strong>. Quadrum задуман как приватный многосезонный проект — 
+                    место, куда хочется возвращаться снова и снова.
+                </p>
+
+                <div class="info-grid">
+                    <div class="info-box">
+                        <div class="info-box-icon">
+                            <i class="fas fa-code-branch"></i>
+                        </div>
+                        <h4>Версия и платформа</h4>
+                        <p>Java Edition <code id="infoVersion">1.21.11</code><br>Чистый ванильный сервер без лишних плагинов, ломающих баланс.</p>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-box-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h4>IP-адрес</h4>
+                        <p>Подключение: <code>Quadrum.gomc.fun</code><br>Стабильный хостинг и защита от DDoS-атак.</p>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-box-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <h4>Simple Voice Chat</h4>
+                        <p>Рекомендуемый мод для голосового общения в игре. Позволяет слышать других игроков рядом с вами.</p>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-box-icon">
+                            <i class="fas fa-face-smile"></i>
+                        </div>
+                        <h4>Emotecraft</h4>
+                        <p>Мод для эмоций и анимаций персонажа. Выражайте свои чувства без слов — танцы, приветствия и многое другое.</p>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 0.9rem; color: var(--gold-bright); margin: 36px 0 20px; text-shadow: 2px 2px 0 #000; line-height: 1.7;">
+                    <i class="fas fa-gem" style="color: var(--gold-primary);"></i> Почему игроки выбирают Quadrum
+                </h3>
+
+                <ul class="feature-list">
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Настоящее ванильное выживание.</strong>
+                            <span> Никаких приватов за деньги, никаких pay-to-win механик. Только чистая игра.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Многосезонный формат.</strong>
+                            <span> Каждый сезон — новая глава истории сервера с уникальными событиями.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Уютное сообщество.</strong>
+                            <span> Небольшой, но дружный коллектив игроков, где каждый знает друг друга.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Атмосфера дома.</strong>
+                            <span> Мы не гонимся за онлайном в сотни человек. Нам важно качество общения.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- ПРАВИЛА -->
+            <div id="rules" class="tab-pane">
+                <h2 class="section-title"><i class="fas fa-gavel"></i>Правила сервера</h2>
+
+                <div class="rules-intro">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>
+                        При заходе на сервер <strong>Quadrum</strong> игрок автоматически соглашается со всеми правилами, изложенными ниже. 
+                        Все правила относятся исключительно к серверу Quadrum и не распространяются на другие проекты. 
+                        <br><br>
+                        <strong>Незнание правил не освобождает от ответственности!</strong> Игрок обязан самостоятельно ознакомиться 
+                        с актуальной версией правил перед началом игры.
+                    </p>
+                </div>
+
+                <!-- РАЗДЕЛ 1 -->
+                <div class="rules-section">
+                    <div class="rules-section-title">
+                        <i class="fas fa-balance-scale"></i>
+                        Раздел 1 — Общие положения. Полномочия администрации
+                    </div>
+                    <ol class="rules-list">
+                        <li>
+                            <strong>Верховенство здравого смысла.</strong> Администрация имеет право выдавать наказания, 
+                            руководствуясь здравым смыслом и конкретной ситуацией, даже если прямой пункт правил не описан досконально.
+                        </li>
+                        <li>
+                            <strong>Окончательность решений.</strong> Решение администрации является окончательным и обжалованию 
+                            не подлежит. Если ситуация не описана в правилах или описана размыто, администратор принимает решение 
+                            на своё усмотрение.
+                        </li>
+                        <li>
+                            <strong>Запрет манипуляций.</strong> Запрещено искать лазейки, манипулировать текстом правил, 
+                            переписывать их смысл или интерпретировать в свою пользу. Администрация пресекает любые попытки 
+                            оправдать свои действия через игру слов.
+                        </li>
+                        <li>
+                            <strong>Полномочия администрации.</strong> Администрация рассматривает любые споры между игроками, 
+                            которые не удалось решить мирным путём, выносит решения по делам и назначает наказания.
+                        </li>
+                        <li>
+                            <strong>Обязательность исполнения.</strong> Администрация имеет право требовать исполнения своих 
+                            решений от всех игроков сервера.
+                        </li>
+                        <li>
+                            <strong>Состав администрации.</strong> В состав администрации может вступить любой игрок сервера, 
+                            который будет участвовать в выборах, проводимых раз в месяц. Окончательное решение по кандидатурам 
+                            остаётся за действующей администрацией.
+                        </li>
+                        <li>
+                            <strong>Запрет самосуда.</strong> Игроки не имеют права самостоятельно наказывать других за нарушение 
+                            правил. Единственный способ — подать жалобу администрации.
+                        </li>
+                    </ol>
+                </div>
+
+                <!-- РАЗДЕЛ 2 -->
+                <div class="rules-section">
+                    <div class="rules-section-title">
+                        <i class="fas fa-comments"></i>
+                        Раздел 2 — Правила общения в Discord и игровом чате
+                    </div>
+                    <ol class="rules-list">
+                        <li>
+                            <strong>Запрещён флуд, капс и спам.</strong> К флуду относится отправка более 4 одинаковых 
+                            по смыслу сообщений подряд, а также бессмысленные сообщения, не несущие смысловой нагрузки. 
+                            К капсу относится написание более 50% сообщения заглавными буквами. Данные ограничения действуют 
+                            как в Discord, так и в игровом чате.
+                        </li>
+                        <li>
+                            <strong>Запрещены оскорбления в любой форме.</strong> Запрещено оскорблять игроков, Администрацию, 
+                            Модерацию, а также родных и близких любого из перечисленных лиц. Оскорбления включают в себя 
+                            нецензурную лексику, буллинг, унижение/принижение женского и мужского пола, унизительные выражения, 
+                            насмешки и любые формы вербального унижения.
+                        </li>
+                        <li>
+                            <strong>Запрещены угрозы в любой форме, даже в шутку.</strong> Угрозы включают в себя обещания 
+                            физической расправы, преследования, нанесения вреда имуществу, а также любые иные формы запугивания.
+                        </li>
+                        <li>
+                            <strong>Запрещена реклама и спам.</strong> Запрещено рекламировать другие Minecraft-сервера, 
+                            Discord-сервера, сайты, услуги, товары и проекты. Запрещено приглашать игроков в другие проекты 
+                            в личных сообщениях. Сервер Quadrum не является торговой площадкой или биржей проектов.
+                        </li>
+                        <li>
+                            <strong>Запрещено аморальное поведение в чате.</strong> К аморальному поведению относится 
+                            обсуждение самоубийства, наркотиков, смерти, 18+ контента, насилия, политики любых стран и любых 
+                            взглядов, а также религии. Данные темы запрещены к обсуждению в любом контексте.
+                        </li>
+                        <li>
+                            <strong>Запрещён ввод в заблуждение.</strong> К вводу в заблуждение относится выдача себя 
+                            за Администрацию или Модерацию, намеренное искажение правил при общении с новичками, обман с целью 
+                            получения выгоды (например, ресурсов). Игрок обязан предоставлять достоверную информацию.
+                        </li>
+                        <li>
+                            <strong>Распространение личной информации.</strong> К личной информации относится: ФИО, номер 
+                            телефона, адрес, IP-адрес, фотографии, данные аккаунтов, а также любая другая информация, которая 
+                            может быть использована для идентификации личности или нанесения вреда.
+                        </li>
+                    </ol>
+                </div>
+
+                <!-- РАЗДЕЛ 3 -->
+                <div class="rules-section">
+                    <div class="rules-section-title">
+                        <i class="fas fa-gamepad"></i>
+                        Раздел 3 — Игровой процесс и нарушения
+                    </div>
+                    <ol class="rules-list">
+                        <li>
+                            <strong>Запрещены читы, моды, ресурспаки, шейдеры и любое другое ПО, которое даёт ЯВНОЕ 
+                            нечестное преимущество над другими игроками.</strong>
+                            <span class="rule-note">
+                                <strong>Примеры запрещённого ПО:</strong><br>
+                                • Freecam (свободная камера) для поиска баз, руд под лавой или обзора сквозь стены;<br>
+                                • X-Ray и Wallhack для просмотра текстур сквозь блоки;<br>
+                                • Авто-кликеры и макросы (кроме анти-афк);<br>
+                                • Ресурспаки, облегчающие поиск руд;<br>
+                                • Любые читы и моды, упрощающие поиск баз или игроков.<br><br>
+                                Если вы не уверены в каком-то моде/ПО, обращайтесь в поддержку, дабы узнать, разрешено ли 
+                                использовать то или иное ПО.
+                            </span>
+                        </li>
+                        <li>
+                            <strong>Запрещена автоматизация игровых процессов.</strong> К автоматизации относится: 
+                            автоматический крафт, автоматическая рыбалка, автоматическое движение жителей, автоматический взрыв 
+                            кристаллов, автоматическая копка шахт, а также любое другое ПО, которое делает что-то за игрока. 
+                            Разрешено ПО, которое просто показывает информацию, которую игрок и так может узнать: прочность 
+                            инструмента, координаты, таймер зелий, свои зелья. Анти-афк разрешён.
+                        </li>
+                        <li>
+                            <strong>Запрещены ники, схожие с Администрацией или Модерацией.</strong> К таким никам относятся 
+                            ники, содержащие имена администрации, модерации или их вариации, а также ники, которые могут ввести 
+                            игроков в заблуждение относительно статуса игрока.
+                        </li>
+                        <li>
+                            <strong>Мультиаккаунтинг.</strong> Запрещено иметь больше одного аккаунта на одного реального 
+                            человека. При нахождении второго аккаунта — второй аккаунт удаляется. Запрещено обходить наказания 
+                            (мут, бан и т.д.) с помощью других аккаунтов.
+                        </li>
+                        <li>
+                            <strong>Запрещено беспричинное убийство.</strong> Беспричинным убийством считается лишение жизни 
+                            другого игрока без его согласия, когда игрок не представляет угрозы и не давал повода для нападения. 
+                            Если тебя пытаются убить без твоего согласия, ты имеешь право защищаться. Исключением является 
+                            нарушение правил территории, где за нахождение на территории владелец может убить вас.
+                        </li>
+                        <li>
+                            <strong>Гриферство.</strong> Это любое разрушение, изменение или повреждение чужих построек, 
+                            сооружений, механизмов, ферм, декораций и иных объектов, созданных другими игроками, без разрешения 
+                            владельца. К гриферству также относится кража чужих ресурсов, предметов, блоков и иного имущества.
+                        </li>
+                        <li>
+                            <strong>Частные территории и локальные правила.</strong> Владелец жилого района или отдельной 
+                            постройки может установить свои правила территории. Например: «Вход = штраф 64 алмаза» или 
+                            «Проход запрещён, нарушитель будет убит». Нарушение правил территории является нарушением, 
+                            за которое наказание назначает администрация.
+                        </li>
+                        <li>
+                            <strong>За кражу, убийство, гриферство или нарушение правил территории наказание назначает 
+                            администрация.</strong> Администрация рассматривает дела по этим нарушениям на основании жалоб, 
+                            доказательств или собственного усмотрения. Администрация выдаёт наказания за эти нарушения 
+                            при наличии прямых доказательств или достаточных оснований.
+                        </li>
+                        <li>
+                            <strong>Если нарушение совершено в особо крупных масштабах, администрация вмешивается и выдаёт 
+                            бан без дополнительных разбирательств.</strong> К особо крупным масштабам относится: массовое 
+                            гриферство, уничтожение множества построек сервера, кража всех ценностей из баз игроков, 
+                            уничтожение чужих ферм в больших объёмах, уничтожение спавна, порталов, дорог.
+                        </li>
+                        <li>
+                            <strong>Массовое гриферство</strong> — разрушение чужих построек в крупных масштабах. 
+                            К массовому гриферству относится: многочисленные разрушения, разрушение нескольких построек целиком, 
+                            уничтожение больших ферм, затопление или заливка лавой большой территории, систематическое 
+                            разрушение построек одного или нескольких игроков, уничтожение общественных построек 
+                            (спавн, порталы, дороги).
+                        </li>
+                        <li>
+                            <strong>Введение в заблуждение администрации.</strong> Любой умышленный обман администрации 
+                            запрещён. К обману относится предоставление поддельных доказательств, ложные показания, сокрытие 
+                            информации, а также любые иные формы введения администрации в заблуждение.
+                        </li>
+                        <li>
+                            <strong>Уважение к администрации.</strong> Администрация и модерация не являются обслуживающим 
+                            персоналом. Это создатели и хранители мира. Критиковать администрацию можно через личные сообщения 
+                            @qqieszu, любому из членов персонала или тикет. Критика должна быть конструктивной, с аргументами, 
+                            без оскорблений.
+                        </li>
+                        <li>
+                            <strong>Использование багов.</strong> Намеренное использование ошибок сервера или игры для 
+                            получения преимущества. К багам относится дюп предметов, использование ошибок в механике игры, 
+                            а также любые иные способы получения преимущества нечестным путём.
+                        </li>
+                        <li>
+                            <strong>Помехи работе сервера.</strong> Лаг-машины, чрезмерная нагрузка на сервер, использование 
+                            дюпов, а также любые иные действия, которые приводят к нестабильной работе сервера.
+                        </li>
+                        <li>
+                            <strong>Использование чужих ферм без разрешения владельца, если это наносит ущерб.</strong> 
+                            Если ферма является частной собственностью, её использование без разрешения владельца запрещено.
+                        </li>
+                        <li>
+                            <strong>Препятствие работе администрации.</strong> Мешать проведению проверок, скрывать 
+                            доказательства, давать ложные показания, а также любые иные действия, направленные на 
+                            воспрепятствование исполнению администрацией своих обязанностей.
+                        </li>
+                    </ol>
+                </div>
+
+                <!-- РАЗДЕЛ 4 -->
+                <div class="rules-section">
+                    <div class="rules-section-title">
+                        <i class="fas fa-scroll"></i>
+                        Раздел 4 — Патентная система
+                    </div>
+                    <ol class="rules-list">
+                        <li>
+                            <strong>Любой игрок может создать патент на что-либо.</strong> Игрок должен являться создателем 
+                            своей идеи и иметь у себя в пользовании данный объект. Игрок не может запатентовать предмет, 
+                            игрока, вещи, которыми пользуется большинство игроков.
+                        </li>
+                        <li>
+                            <strong>Патент</strong> — официальное признание того, что игрок является автором и владельцем 
+                            определённой идеи, изобретения, постройки, механизма, дизайна, торговой марки или территории.
+                        </li>
+                        <li>
+                            <strong>Патент выдаётся на срок 30 дней.</strong> По истечении срока патент можно продлить.
+                        </li>
+                        <li>
+                            <strong>Чтобы получить патент, игрок подаёт заявку в специальном канале,</strong> которую 
+                            проверяет главный администратор сервера. Патент регистрируется администрацией и вносится 
+                            в реестр патентов.
+                        </li>
+                        <li>
+                            <strong>Патент защищает права автора на его изобретение.</strong> Запрещено использовать чужой 
+                            патент без разрешения владельца. Запрещено копировать или выдавать за своё то, что запатентовано 
+                            другим игроком.
+                        </li>
+                        <li>
+                            <strong>Если игрок нарушает патентные права другого игрока,</strong> владелец патента может 
+                            подать жалобу администрации. Администрация рассматривает патентные споры и может вынести наказание 
+                            за нарушение патентных прав.
+                        </li>
+                        <li>
+                            <strong>Если игрок создал что-то похожее, но независимо и без копирования,</strong> это 
+                            не считается нарушением.
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- КОНТАКТЫ -->
+            <div id="contacts" class="tab-pane">
+                <h2 class="section-title"><i class="fas fa-users"></i>Связь с администрацией</h2>
+                <p class="subtitle">
+                    Все новости, поддержка и общение происходят в нашем Discord-сервере. 
+                    Присоединяйтесь, чтобы быть в курсе событий.
+                </p>
+
+                <div class="contact-grid">
+                    <div class="discord-panel">
+                        <i class="fab fa-discord discord-icon"></i>
+                        <h3>Discord Quadrum</h3>
+                        <p>Присоединяйся к нашему сообществу, задавай вопросы и находи друзей для совместной игры.</p>
+                        <a href="https://discord.gg/quadrum" target="_blank" rel="noopener" class="discord-btn">
+                            <i class="fab fa-discord"></i>
+                            Перейти в Discord
+                        </a>
+                    </div>
+
+                    <div class="staff-panel">
+                        <div class="staff-title">
+                            <i class="fas fa-crown"></i>
+                            Команда сервера
+                        </div>
+
+                        <div class="admin-card">
+                            <div class="admin-avatar-wrap">
+                                <div class="admin-avatar">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <div class="admin-status-indicator"></div>
+                            </div>
+                            <div class="admin-info">
+                                <h4>Qqieszu</h4>
+                                <span class="admin-role head-admin">Главный администратор</span>
+                            </div>
+                        </div>
+
+                        <div class="admin-card">
+                            <div class="admin-avatar-wrap">
+                                <div class="admin-avatar">
+                                    <i class="fas fa-user-shield"></i>
+                                </div>
+                                <div class="admin-status-indicator"></div>
+                            </div>
+                            <div class="admin-info">
+                                <h4>fakexdtt</h4>
+                                <span class="admin-role">Старший модератор</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 32px; padding: 24px; background: rgba(37, 28, 20, 0.6); border-left: 5px solid var(--gold-primary); display: flex; align-items: center; gap: 18px; border-top: 1px solid rgba(245,179,66,0.2); border-right: 1px solid rgba(245,179,66,0.2); border-bottom: 1px solid rgba(245,179,66,0.2);">
+                    <i class="fas fa-clock" style="color: var(--gold-primary); font-size: 1.6rem;"></i>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        <strong style="color: var(--gold-bright);">Время ответа:</strong> обычно в течение 1–3 часов. 
+                        По срочным вопросам пишите в Discord в канал <code style="background: rgba(245,179,66,0.1); padding: 2px 8px; color: var(--gold-bright); font-family: 'VT323', monospace; font-size: 1.1rem;">#поддержка</code>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ГАЛЕРЕЯ -->
+            <div id="gallery" class="tab-pane">
+                <h2 class="section-title"><i class="fas fa-camera"></i>Скриншоты сервера</h2>
+                <p class="subtitle">
+                    Атмосфера Quadrum глазами игроков. Каждый скриншот — это история, момент, который хочется сохранить.
+                </p>
+
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1607513746994-51f7c6a2a0b6?w=800&auto=format&fit=crop&q=80" alt="Спавн сервера Quadrum">
+                        <div class="gallery-caption">
+                            <div class="gallery-caption-title"><i class="fas fa-tree"></i> Центральный спавн</div>
+                            <div class="gallery-caption-desc">Портал в приключения для каждого нового игрока</div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1627856013091-fed6e4e9c8b3?w=800&auto=format&fit=crop&q=80" alt="Ночной город">
+                        <div class="gallery-caption">
+                            <div class="gallery-caption-title"><i class="fas fa-moon"></i> Османия</div>
+                            <div class="gallery-caption-desc">Огни города не гаснут даже после заката</div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1600965962102-9d260a71890d?w=800&auto=format&fit=crop&q=80" alt="Подземелье">
+                        <div class="gallery-caption">
+                            <div class="gallery-caption-title"><i class="fas fa-dungeon"></i> Статуя ангела</div>
+                            <div class="gallery-caption-desc">Скоро...</div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&auto=format&fit=crop&q=80" alt="Ландшафт">
+                        <div class="gallery-caption">
+                            <div class="gallery-caption-title"><i class="fas fa-mountain"></i> Живописные горы</div>
+                            <div class="gallery-caption-desc">Скоро...</div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=800&auto=format&fit=crop&q=80" alt="Ферма">
+                        <div class="gallery-caption">
+                            <div class="gallery-caption-title"><i class="fas fa-wheat-awn"></i> Скоро...</div>
+                            <div class="gallery-caption-desc">Скоро...</div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1597852074816-d933c7d2b988?w=800&auto=format&fit=crop&q=80" alt="Ивент">
+                        <div class="gallery-caption">
+                            <div class="gallery-caption-title"><i class="fas fa-fire"></i> Скоро...</div>
+                            <div class="gallery-caption-desc">Скоро...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <p style="margin-top: 28px; color: var(--text-muted); font-size: 0.85rem; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-info-circle" style="color: var(--gold-primary);"></i>
+                    Все скриншоты сделаны на сервере Quadrum. Хочешь попасть в галерею? Присылай свои работы в Discord.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ФУТЕР -->
+    <footer class="footer">
+        <div class="footer-brand">Quadrum</div>
+        <div class="footer-links">
+            <a href="#" data-tab-link="info"><i class="fas fa-info-circle"></i> О сервере</a>
+            <a href="#" data-tab-link="rules"><i class="fas fa-gavel"></i> Правила</a>
+            <a href="#" data-tab-link="contacts"><i class="fas fa-users"></i> Контакты</a>
+            <a href="#" data-tab-link="gallery"><i class="fas fa-images"></i> Галерея</a>
+        </div>
+        <p>© 2025–2026 Quadrum Minecraft Server. Все права защищены.</p>
+        <p style="margin-top: 8px; font-size: 0.75rem;">Приватный многосезонный проект ванильного выживания</p>
+    </footer>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastText">IP скопирован!</span>
+</div>
+
+<script>
+/* ---------- ЧАСТИЦЫ ---------- */
+(function initParticles() {
+    var container = document.getElementById('particles');
+    if (!container) return;
+    var count = 35;
+    for (var i = 0; i < count; i++) {
+        var particle = document.createElement('div');
+        particle.className = 'particle';
+        var size = Math.random() * 4 + 3;
+        var left = Math.random() * 100;
+        var duration = Math.random() * 15 + 12;
+        var delay = Math.random() * 15;
+        var drift = (Math.random() - 0.5) * 200;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particle.style.left = left + '%';
+        particle.style.animationDuration = duration + 's';
+        particle.style.animationDelay = delay + 's';
+        particle.style.setProperty('--drift', drift + 'px');
+        if (Math.random() > 0.6) {
+            particle.style.background = '#a83232';
+            particle.style.boxShadow = '0 0 12px #a83232, 0 0 24px #6b1f1f';
+        }
+        container.appendChild(particle);
+    }
+})();
+
+/* ---------- ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ---------- */
+function switchTab(tabId) {
+    var tabButtons = document.querySelectorAll('.tab-btn');
+    var tabPanes = document.querySelectorAll('.tab-pane');
+
+    tabButtons.forEach(function(btn) {
+        btn.classList.remove('active');
+    });
+    tabPanes.forEach(function(pane) {
+        pane.classList.remove('active');
+    });
+
+    var activeButton = document.querySelector('.tab-btn[data-tab="' + tabId + '"]');
+    var activePane = document.getElementById(tabId);
+
+    if (activeButton) activeButton.classList.add('active');
+    if (activePane) activePane.classList.add('active');
+}
+window.switchTab = switchTab;
+
+function switchTabAndScroll(tabId) {
+    switchTab(tabId);
+    var wrapper = document.querySelector('.tabs-wrapper');
+    if (wrapper) {
+        setTimeout(function() {
+            wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 80);
+    }
+}
+window.switchTabAndScroll = switchTabAndScroll;
+
+/* ---------- РЕАЛЬНЫЙ ОНЛАЙН С mcsrvstat.us ---------- */
+var SERVER_IP = 'Quadrum.gomc.fun';
+var API_URL = 'https://api.mcsrvstat.us/3/' + SERVER_IP;
+var CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+
+function updateOnlineDisplay(online, max, isOnline) {
+    var countElement = document.getElementById('onlineCount');
+    var statusDot = document.getElementById('statusDot');
+    var statusText = document.getElementById('statusText');
+
+    if (countElement) {
+        countElement.textContent = (isOnline && typeof online === 'number') ? online : '—';
+    }
+
+    if (statusText) {
+        statusText.textContent = isOnline ? 'Сервер онлайн' : 'Сервер оффлайн';
+    }
+
+    if (statusDot) {
+        if (isOnline) {
+            statusDot.style.background = 'rgba(76, 175, 80, 0.12)';
+            statusDot.style.borderColor = 'rgba(76, 175, 80, 0.4)';
+        } else {
+            statusDot.style.background = 'rgba(168, 50, 50, 0.15)';
+            statusDot.style.borderColor = 'rgba(168, 50, 50, 0.5)';
+        }
+    }
+}
+
+function fetchServerStatus() {
+    var countElement = document.getElementById('onlineCount');
+    if (countElement) countElement.textContent = '...';
+
+    fetch(CORS_PROXY + encodeURIComponent(API_URL))
+        .then(function(response) {
+            if (!response.ok) throw new Error('Network error');
+            return response.json();
+        })
+        .then(function(data) {
+            if (data && data.online) {
+                var online = (data.players && typeof data.players.online === 'number') ? data.players.online : 0;
+                var max = (data.players && typeof data.players.max === 'number') ? data.players.max : '?';
+                updateOnlineDisplay(online, max, true);
+
+                // Обновляем версию, если пришла
+                if (data.version) {
+                    var versionTag = document.getElementById('versionTag');
+                    var infoVersion = document.getElementById('infoVersion');
+                    var ver = typeof data.version === 'string' ? data.version : (data.version.name || '');
+                    if (ver) {
+                        if (versionTag) versionTag.textContent = ver;
+                        if (infoVersion) infoVersion.textContent = ver;
+                    }
+                }
+            } else {
+                updateOnlineDisplay(null, null, false);
+            }
+        })
+        .catch(function(error) {
+            console.error('Ошибка получения статуса сервера:', error);
+            // Пробуем напрямую, если прокси не сработал
+            fetch(API_URL)
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data && data.online) {
+                        var online = (data.players && typeof data.players.online === 'number') ? data.players.online : 0;
+                        updateOnlineDisplay(online, null, true);
+                    } else {
+                        updateOnlineDisplay(null, null, false);
+                    }
+                })
+                .catch(function() {
+                    updateOnlineDisplay(null, null, false);
+                });
+        });
+}
+
+/* ---------- ОБРАБОТЧИКИ ---------- */
+document.addEventListener('DOMContentLoaded', function() {
+    // Запускаем проверку онлайна
+    fetchServerStatus();
+    setInterval(fetchServerStatus, 60000);
+
+    var tabButtons = document.querySelectorAll('.tab-btn');
+    tabButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var tabId = btn.getAttribute('data-tab');
+            if (tabId) switchTab(tabId);
+        });
+    });
+
+    var playBtn = document.getElementById('playBtn');
+    if (playBtn) {
+        playBtn.addEventListener('click', function() {
+            copyIP(SERVER_IP);
+        });
+    }
+
+    var discordHeroBtn = document.getElementById('discordHeroBtn');
+    if (discordHeroBtn) {
+        discordHeroBtn.addEventListener('click', function() {
+            switchTabAndScroll('contacts');
+        });
+    }
+
+    var ipAddress = document.getElementById('ipAddress');
+    if (ipAddress) {
+        ipAddress.addEventListener('click', function() {
+            copyIP(SERVER_IP);
+        });
+        ipAddress.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                copyIP(SERVER_IP);
+            }
+        });
+    }
+
+    var footerLinks = document.querySelectorAll('[data-tab-link]');
+    footerLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var tabId = link.getAttribute('data-tab-link');
+            if (tabId) switchTabAndScroll(tabId);
+        });
+    });
+
+    /* ---------- ПОЯВЛЕНИЕ ЭЛЕМЕНТОВ ПРИ СКРОЛЛЕ ---------- */
+    var revealElements = document.querySelectorAll('.info-box, .feature-list li, .rules-list li, .gallery-item, .admin-card');
+    if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry, index) {
+                if (entry.isIntersecting) {
+                    (function(el, i) {
+                        setTimeout(function() {
+                            el.style.opacity = '1';
+                            el.style.transform = 'translateY(0)';
+                        }, i * 70);
+                    })(entry.target, index);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        revealElements.forEach(function(el) {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.7s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1)';
+            observer.observe(el);
+        });
+    }
+
+    /* ---------- ПАРАЛЛАКС HERO-IP ---------- */
+    var hero = document.querySelector('.hero');
+    var heroIp = document.querySelector('.hero-ip');
+    if (hero && heroIp) {
+        document.addEventListener('mousemove', function(e) {
+            var rect = hero.getBoundingClientRect();
+            if (e.clientX < rect.right && e.clientX > rect.left && e.clientY < rect.bottom && e.clientY > rect.top) {
+                var x = (e.clientX - rect.left) / rect.width - 0.5;
+                var y = (e.clientY - rect.top) / rect.height - 0.5;
+                heroIp.style.transform = 'translate(' + (x * 15) + 'px, ' + (y * 15) + 'px)';
+            }
+        });
+        hero.addEventListener('mouseleave', function() {
+            heroIp.style.transform = 'translate(0, 0)';
+        });
+    }
+
+    /* ---------- СВЕЧЕНИЕ КУРСОРА ---------- */
+    var glow = document.createElement('div');
+    glow.style.cssText = 'position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle, rgba(245,179,66,0.06) 0%, transparent 70%);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:opacity 0.3s;opacity:0;';
+    document.body.appendChild(glow);
+
+    document.addEventListener('mousemove', function(e) {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+        glow.style.opacity = '1';
+    });
+
+    document.addEventListener('mouseleave', function() {
+        glow.style.opacity = '0';
+    });
+});
+
+/* ---------- КОПИРОВАНИЕ IP ---------- */
+function copyIP(ip) {
+    var ipElement = document.getElementById('ipAddress');
+    var toast = document.getElementById('toast');
+    var toastText = document.getElementById('toastText');
+
+    function onSuccess() {
+        showToast('IP скопирован: ' + ip);
+        if (ipElement) {
+            ipElement.classList.add('copied');
+            setTimeout(function() {
+                ipElement.classList.remove('copied');
+            }, 1500);
+        }
+    }
+
+    function fallbackCopy() {
+        var textarea = document.createElement('textarea');
+        textarea.value = ip;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            onSuccess();
+        } catch (e) {
+            showToast('Не удалось скопировать: ' + ip);
+        }
+        document.body.removeChild(textarea);
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(ip).then(onSuccess).catch(fallbackCopy);
+    } else {
+        fallbackCopy();
+    }
+}
+window.copyIP = copyIP;
+
+function showToast(message) {
+    var toast = document.getElementById('toast');
+    var toastText = document.getElementById('toastText');
+    if (!toast) return;
+    if (toastText) toastText.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(window.toastTimer);
+    window.toastTimer = setTimeout(function() {
+        toast.classList.remove('show');
+    }, 2500);
+}
+window.showToast = showToast;
+
+/* ---------- ПЛАВНЫЙ СКРОЛЛ ПО ЯКОРЯМ ---------- */
+document.addEventListener('click', function(e) {
+    var target = e.target.closest('a[href^="#"]');
+    if (!target) return;
+    var href = target.getAttribute('href');
+    if (href === '#' || href === '') return;
+    var targetEl = document.querySelector(href);
+    if (targetEl) {
+        e.preventDefault();
+        targetEl.scrollIntoView({ behavior: 'smooth' });
+    }
+});
+</script>
+
+</body>
+</html>
