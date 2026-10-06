@@ -2142,18 +2142,24 @@ function switchTabAndScroll(tabId) {
 }
 window.switchTabAndScroll = switchTabAndScroll;
 
-/* ---------- РЕАЛЬНЫЙ ОНЛАЙН С mcsrvstat.us ---------- */
+/* ---------- РЕАЛЬНЫЙ ОНЛАЙН С mcstatus.xyz ---------- */
+var SERVER_HOST = 'quadrum.gomc.fun';
+var SERVER_PORT = 25618;
 var SERVER_IP = 'Quadrum.gomc.fun';
-var API_URL = 'https://api.mcsrvstat.us/3/' + SERVER_IP;
+var API_BASE = 'https://mcstatus.xyz/api/status?host=' + SERVER_HOST + '&port=' + SERVER_PORT + '&edition=java';
 var CORS_PROXY = 'https://api.allorigins.win/raw?url=';
 
-function updateOnlineDisplay(online, max, isOnline) {
+function updateOnlineDisplay(online, max, isOnline, versionName) {
     var countElement = document.getElementById('onlineCount');
     var statusDot = document.getElementById('statusDot');
     var statusText = document.getElementById('statusText');
 
     if (countElement) {
-        countElement.textContent = (isOnline && typeof online === 'number') ? online : '—';
+        if (isOnline && typeof online === 'number') {
+            countElement.textContent = online + (max ? '/' + max : '');
+        } else {
+            countElement.textContent = '—';
+        }
     }
 
     if (statusText) {
@@ -2169,52 +2175,60 @@ function updateOnlineDisplay(online, max, isOnline) {
             statusDot.style.borderColor = 'rgba(168, 50, 50, 0.5)';
         }
     }
+
+    // Обновляем версию, если пришла
+    if (isOnline && versionName) {
+        var versionTag = document.getElementById('versionTag');
+        var infoVersion = document.getElementById('infoVersion');
+        if (versionTag) versionTag.textContent = versionName;
+        if (infoVersion) infoVersion.textContent = versionName;
+    }
+}
+
+function parseMcStatusResponse(data) {
+    if (!data || !data.ok || !data.data) return { isOnline: false };
+    
+    var d = data.data;
+    var online = (d.players && typeof d.players.online === 'number') ? d.players.online : 0;
+    var max = (d.players && typeof d.players.max === 'number') ? d.players.max : null;
+    
+    // Убираем название ядра — оставляем только версию (например, "Paper 1.21.11" → "1.21.11")
+    var versionName = null;
+    if (d.version && d.version.name) {
+        var rawVersion = d.version.name;
+        var match = rawVersion.match(/\d+\.\d+(\.\d+)?/);
+        versionName = match ? match[0] : rawVersion;
+    }
+    
+    return { isOnline: true, online: online, max: max, versionName: versionName };
 }
 
 function fetchServerStatus() {
     var countElement = document.getElementById('onlineCount');
     if (countElement) countElement.textContent = '...';
 
-    fetch(CORS_PROXY + encodeURIComponent(API_URL))
+    // Сначала пробуем напрямую
+    fetch(API_BASE)
         .then(function(response) {
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('HTTP ' + response.status);
             return response.json();
         })
         .then(function(data) {
-            if (data && data.online) {
-                var online = (data.players && typeof data.players.online === 'number') ? data.players.online : 0;
-                var max = (data.players && typeof data.players.max === 'number') ? data.players.max : '?';
-                updateOnlineDisplay(online, max, true);
-
-                // Обновляем версию, если пришла
-                if (data.version) {
-                    var versionTag = document.getElementById('versionTag');
-                    var infoVersion = document.getElementById('infoVersion');
-                    var ver = typeof data.version === 'string' ? data.version : (data.version.name || '');
-                    if (ver) {
-                        if (versionTag) versionTag.textContent = ver;
-                        if (infoVersion) infoVersion.textContent = ver;
-                    }
-                }
-            } else {
-                updateOnlineDisplay(null, null, false);
-            }
+            var result = parseMcStatusResponse(data);
+            updateOnlineDisplay(result.online, result.max, result.isOnline, result.versionName);
         })
         .catch(function(error) {
-            console.error('Ошибка получения статуса сервера:', error);
-            // Пробуем напрямую, если прокси не сработал
-            fetch(API_URL)
+            console.warn('Прямой запрос не удался, пробуем через прокси:', error.message);
+            // Fallback: через CORS-прокси
+            fetch(CORS_PROXY + encodeURIComponent(API_BASE))
                 .then(function(r) { return r.json(); })
                 .then(function(data) {
-                    if (data && data.online) {
-                        var online = (data.players && typeof data.players.online === 'number') ? data.players.online : 0;
-                        updateOnlineDisplay(online, null, true);
-                    } else {
-                        updateOnlineDisplay(null, null, false);
-                    }
+                    var result = parseMcStatusResponse(data);
+                    updateOnlineDisplay(result.online, result.max, result.isOnline, result.versionName);
                 })
-                .catch(function() {
-                    updateOnlineDisplay(null, null, false);
+                .catch(function(err) {
+                    console.error('Онлайн недоступен:', err);
+                    updateOnlineDisplay(null, null, false, null);
                 });
         });
 }
